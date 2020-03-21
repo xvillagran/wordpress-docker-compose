@@ -39,6 +39,7 @@ services:
     restart: unless-stopped
     ports:
       - "8080:80"
+      - "443:443"
     volumes:
       - wordpress:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
@@ -54,13 +55,13 @@ services:
     volumes:
       - certbot-etc:/etc/letsencrypt
       - wordpress:/var/www/html
-    command: certonly --webroot --webroot-path=/var/www/html --email sammy@example.com --agree-tos --no-eff-email --staging -d example.com -d www.example.com
+    command: certonly --webroot --webroot-path=/var/www/html --email $ADMIN_EMAIL --agree-tos --no-eff-email --staging -d example.com -d $SITE_DOMAIN
 
-  volumes:
-    certbot-etc:
-    wordpress:
-    dbdata:
+volumes:
+  certbot-etc:
+  wordpress:
+  dbdata:
 
-  networks:
-    app-network:
-      driver: bridge
+networks:
+  app-network:
+    driver: bridge
