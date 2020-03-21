@@ -27,7 +27,7 @@ services:
       - WORDPRESS_DB_PASSWORD=$MYSQL_PASSWORD
       - WORDPRESS_DB_NAME=wordpress
     volumes:
-      - wordpress:/var/www/html
+      - $WORDPRESS_PATH:/var/www/html
     networks:
       - app-network
 
@@ -41,7 +41,7 @@ services:
       - "8080:80"
       - "443:443"
     volumes:
-      - wordpress:/var/www/html
+      - $WORDPRESS_PATH:/var/www/html
       - ./nginx-conf:/etc/nginx/conf.d
       - certbot-etc:/etc/letsencrypt
     networks:
@@ -54,8 +54,24 @@ services:
     container_name: certbot
     volumes:
       - certbot-etc:/etc/letsencrypt
-      - wordpress:/var/www/html
+      - $WORDPRESS_PATH:/var/www/html
     command: certonly --webroot --webroot-path=/var/www/html --email $ADMIN_EMAIL --agree-tos --no-eff-email --staging -d example.com -d $SITE_DOMAIN
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+      - PMA_USER=$MYSQL_USER
+      - PMA_PASSWORD=$MYSQL_PASSWORD
+    ports:
+      - 8010:80
+    volumes:
+      - /sessions
+    depends_on:
+      - certbot
+    networks:
+      - app-network
 
 volumes:
   certbot-etc:

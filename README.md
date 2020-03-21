@@ -30,6 +30,7 @@ MYSQL_USER=your_wordpress_database_user
 MYSQL_PASSWORD=your_wordpress_database_password
 SITE_DOMAIN=www.example.com
 ADMIN_EMAIL=someemail@mailnator.com
+WORDPRESS_PATH=./wordpress
 ```
 ## Authors
 
