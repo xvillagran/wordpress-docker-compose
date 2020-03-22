@@ -7,11 +7,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-  
-```
-Give examples
-```
+ - Docker
+ - Docker-compose
 
 ### Installing
 
@@ -20,6 +17,7 @@ A step by step series of examples that tell you how to get a development env run
 Say what the step will be
 
 ```
+cd /path/to/your/work/dir
 touch .env
 nano .env
 ```
@@ -31,7 +29,24 @@ MYSQL_PASSWORD=your_wordpress_database_password
 SITE_DOMAIN=www.example.com
 ADMIN_EMAIL=someemail@mailnator.com
 WORDPRESS_PATH=./wordpress
+UID=1000
 ```
+
+Get it up and running
+```
+docker-compose up
+```
+Go to http://127.0.01:8080 to complete the Wordpress installation
+
+## Set up permissions to edit (optional)
+Assuming that your host userd id is 1000
+```
+docker-compose exec wordpress bash
+chown -R www-data:1000 wp-content/
+chmod -R g+w wp-content/
+exit
+```
+
 ## Authors
 
 * **Xuan Villagran**
